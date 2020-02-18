@@ -8,6 +8,7 @@ var PHOTOS = ['http://o0.github.io/assets/images/tokyo/hotel1.jpg', 'http://o0.g
 var map = document.querySelector('.map');
 var maPins = document.querySelector('.map__pins');
 var template = document.querySelector('#pin').content.querySelector('.map__pin');
+
 var PIN_OFFSET_TOP = template.offsetHeight;
 var PIN_OFFSET_LEFT = template.offsetWidth;
 
