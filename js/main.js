@@ -6,11 +6,15 @@ var FEATURES = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditio
 var PHOTOS = ['http://o0.github.io/assets/images/tokyo/hotel1.jpg', 'http://o0.github.io/assets/images/tokyo/hotel2.jpg', 'http://o0.github.io/assets/images/tokyo/hotel3.jpg'];
 
 var map = document.querySelector('.map');
-var maPins = document.querySelector('.map__pins');
+var mapPins = document.querySelector('.map__pins');
 var template = document.querySelector('#pin').content.querySelector('.map__pin');
 
 var PIN_OFFSET_TOP = template.offsetHeight;
 var PIN_OFFSET_LEFT = template.offsetWidth;
+var LOCATION_X_MIN = 1;
+var LOCATION_X_MAX = mapPins.offsetWidth;
+var LOCATION_Y_MIN = 130;
+var LOCATION_Y_MAX = 630;
 
 function randomInteger(min, max) {
   var rand = min + Math.random() * (max + 1 - min);
@@ -18,34 +22,31 @@ function randomInteger(min, max) {
 }
 
 function randomElementArray(array) {
-  var RandomIndex = Math.floor(Math.random() * array.length);
-  return array[RandomIndex];
+  var elem = randomInteger(array[0], array.lenght);
+  return Math.floor(elem);
+}
+
+function randomArrayLenght(array) {
+  randomInteger(1, array.lenght);
 }
 
 function buildRandomArray(array) {
   var items = [];
-  for (var i = 0; i <= randomInteger(1, array.length); i++) {
+  var randomAmount = randomArrayLenght(array);
+  for (var i = 0; i <= randomAmount; i++) {
     items.push(items.length);
   }
   return items;
 }
 
-function getLocationX() {
-  return randomInteger(1, 1200);
-}
-
-function getLocationY() {
-  return randomInteger(130, 630);
-}
-
-function getSinglePin() {
+function getSinglePin(i) {
   var singlePin = {
     author: {
-      avatar: 'img/avatars/user0' + randomInteger(1, 8) + '.png'
+      avatar: 'img/avatars/user0' + (i + 1) + '.png'
     },
     offer: {
       title: 'Заголовок',
-      address: getLocationX() + ' ' + getLocationY(),
+      address: location.x + ', ' + location.y,
       price: randomInteger(1000, 1000000),
       type: randomElementArray(TYPES),
       rooms: randomInteger(1, 3),
@@ -56,16 +57,16 @@ function getSinglePin() {
       photos: randomElementArray(PHOTOS),
     },
     location: {
-      x: getLocationX(),
-      y: getLocationY()
+      x: randomInteger(LOCATION_X_MIN, LOCATION_X_MAX),
+      y: randomInteger(LOCATION_Y_MIN, LOCATION_Y_MAX)
     }
   };
   return singlePin;
 }
 
-function getPins(numbers) {
+function getPins(amount) {
   var array = [];
-  for (var i = 0; i < numbers; i++) {
+  for (var i = 0; i < amount; i++) {
     array[array.length] = getSinglePin(i);
   }
   return array;
@@ -90,4 +91,4 @@ var fragment = document.createDocumentFragment();
 for (var i = 0; i < pins.length; i++) {
   fragment.appendChild(renderPin(pins[i]));
 }
-maPins.appendChild(fragment);
+mapPins.appendChild(fragment);
