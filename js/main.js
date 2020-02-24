@@ -15,6 +15,7 @@ var LOCATION_X_MIN = 1;
 var LOCATION_X_MAX = mapPins.offsetWidth;
 var LOCATION_Y_MIN = 130;
 var LOCATION_Y_MAX = 630;
+var TARGET_AMOUNT = 8;
 
 function randomInteger(min, max) {
   var rand = min + Math.random() * (max + 1 - min);
@@ -22,12 +23,20 @@ function randomInteger(min, max) {
 }
 
 function randomElementArray(array) {
-  var elem = randomInteger(array[0], array.lenght);
+  var elem = randomInteger(1, array.lenght);
   return Math.floor(elem);
 }
 
 function randomArrayLenght(array) {
   randomInteger(1, array.lenght);
+}
+
+function getLocationX() {
+  return randomInteger(LOCATION_X_MIN, LOCATION_X_MAX);
+}
+
+function getLocationY() {
+  return randomInteger(LOCATION_Y_MIN, LOCATION_Y_MAX);
 }
 
 function buildRandomArray(array) {
@@ -37,6 +46,14 @@ function buildRandomArray(array) {
     items.push(items.length);
   }
   return items;
+}
+
+function getPins(amount) {
+  var array = [];
+  for (var i = 0; i < amount; i++) {
+    array[array.length] = getSinglePin(i);
+  }
+  return array;
 }
 
 function getSinglePin(i) {
@@ -57,24 +74,12 @@ function getSinglePin(i) {
       photos: randomElementArray(PHOTOS),
     },
     location: {
-      x: randomInteger(LOCATION_X_MIN, LOCATION_X_MAX),
-      y: randomInteger(LOCATION_Y_MIN, LOCATION_Y_MAX)
+      x: getLocationX(),
+      y: getLocationY()
     }
   };
   return singlePin;
 }
-
-function getPins(amount) {
-  var array = [];
-  for (var i = 0; i < amount; i++) {
-    array[array.length] = getSinglePin(i);
-  }
-  return array;
-}
-
-var pins = getPins(8);
-
-map.classList.remove('map--faded');
 
 function renderPin(singlePin) {
   var pinItem = template.cloneNode(true);
@@ -87,8 +92,14 @@ function renderPin(singlePin) {
   return pinItem;
 }
 
-var fragment = document.createDocumentFragment();
-for (var i = 0; i < pins.length; i++) {
-  fragment.appendChild(renderPin(pins[i]));
+function main() {
+  map.classList.remove('map--faded');
+  var fragment = document.createDocumentFragment();
+  var pins = getPins(TARGET_AMOUNT);
+  for (var i = 0; i < pins.length; i++) {
+    fragment.appendChild(renderPin(pins[i]));
+  }
+  mapPins.appendChild(fragment);
 }
-mapPins.appendChild(fragment);
+
+main();
