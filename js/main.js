@@ -23,12 +23,8 @@ function randomInteger(min, max) {
 }
 
 function randomElementArray(array) {
-  var elem = randomInteger(1, array.lenght);
+  var elem = randomInteger(0, array.lenght);
   return Math.floor(elem);
-}
-
-function randomArrayLenght(array) {
-  randomInteger(1, array.lenght);
 }
 
 function getLocationX() {
@@ -41,7 +37,7 @@ function getLocationY() {
 
 function buildRandomArray(array) {
   var items = [];
-  var randomAmount = randomArrayLenght(array);
+  var randomAmount = randomInteger(1, array.lenght);
   for (var i = 0; i <= randomAmount; i++) {
     items.push(items.length);
   }
