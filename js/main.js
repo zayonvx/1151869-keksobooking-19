@@ -17,27 +17,27 @@ var LOCATION_Y_MIN = 130;
 var LOCATION_Y_MAX = 630;
 var TARGET_AMOUNT = 8;
 
-function randomInteger(min, max) {
+function getRandomInteger(min, max) {
   var rand = min + Math.random() * (max + 1 - min);
   return Math.floor(rand);
 }
 
-function randomElementArray(array) {
-  var elem = randomInteger(0, array.lenght);
-  return Math.floor(elem);
+function getRandomElementArray(array) {
+  var elem = getRandomInteger(0, array.lenght - 1);
+  return elem;
 }
 
 function getLocationX() {
-  return randomInteger(LOCATION_X_MIN, LOCATION_X_MAX);
+  return getRandomInteger(LOCATION_X_MIN, LOCATION_X_MAX);
 }
 
 function getLocationY() {
-  return randomInteger(LOCATION_Y_MIN, LOCATION_Y_MAX);
+  return getRandomInteger(LOCATION_Y_MIN, LOCATION_Y_MAX);
 }
 
-function buildRandomArray(array) {
+function setRandomArray(array) {
   var items = [];
-  var randomAmount = randomInteger(1, array.lenght);
+  var randomAmount = getRandomInteger(1, array.lenght);
   for (var i = 0; i <= randomAmount; i++) {
     items.push(items.length);
   }
@@ -60,14 +60,14 @@ function getSinglePin(i) {
     offer: {
       title: 'Заголовок',
       address: location.x + ', ' + location.y,
-      price: randomInteger(1000, 1000000),
-      type: randomElementArray(TYPES),
-      rooms: randomInteger(1, 3),
-      guests: randomInteger(1, 3),
-      checkin: randomElementArray(TIMES),
-      checkout: randomElementArray(TIMES),
-      features: buildRandomArray(FEATURES),
-      photos: randomElementArray(PHOTOS),
+      price: getRandomInteger(1000, 1000000),
+      type: getRandomElementArray(TYPES),
+      rooms: getRandomInteger(1, 3),
+      guests: getRandomInteger(1, 3),
+      checkin: getRandomElementArray(TIMES),
+      checkout: getRandomElementArray(TIMES),
+      features: setRandomArray(FEATURES),
+      photos: getRandomElementArray(PHOTOS),
     },
     location: {
       x: getLocationX(),
