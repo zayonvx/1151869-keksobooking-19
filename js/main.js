@@ -79,8 +79,6 @@ function getSinglePin(i) {
   return singlePin;
 }
 
-var random = getSinglePin(0);
-
 function renderPin(singlePin) {
   var pinItem = template.cloneNode(true);
 
