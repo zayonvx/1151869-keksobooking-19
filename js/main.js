@@ -23,8 +23,8 @@ function getRandomInteger(min, max) {
 }
 
 function getRandomElementArray(array) {
-  var elem = getRandomInteger(0, array.lenght - 1);
-  return elem;
+  var randomIndex = getRandomInteger(0, array.lenght - 1);
+  return array[randomIndex];
 }
 
 function getLocationX() {
