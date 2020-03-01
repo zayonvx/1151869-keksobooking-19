@@ -24,7 +24,7 @@ function getRandomInteger(min, max) {
 }
 
 function getRandomElementArray(array) {
-  var randomIndex = getRandomInteger(0, array.lenght - 1);
+  var randomIndex = getRandomInteger(0, array.length - 1);
   return array[randomIndex];
 }
 
@@ -38,7 +38,7 @@ function getLocationY() {
 
 function setRandomArray(array) {
   var items = [];
-  var randomAmount = getRandomInteger(1, array.lenght);
+  var randomAmount = getRandomInteger(1, array.length);
   for (var i = 0; i <= randomAmount; i++) {
     items.push(items.length);
   }
@@ -54,13 +54,15 @@ function getPins(amount) {
 }
 
 function getSinglePin(i) {
+  var locationX = getLocationX();
+  var locationY = getLocationY();
   var singlePin = {
     author: {
       avatar: 'img/avatars/user0' + (i + 1) + '.png'
     },
     offer: {
       title: 'Заголовок',
-      address: location.x + ', ' + location.y,
+      address: locationX + ', ' + locationY,
       price: getRandomInteger(1000, 1000000),
       type: getRandomElementArray(TYPES),
       rooms: getRandomInteger(1, 3),
@@ -72,8 +74,8 @@ function getSinglePin(i) {
       photos: getRandomElementArray(PHOTOS),
     },
     location: {
-      x: getLocationX(),
-      y: getLocationY()
+      x: locationX,
+      y: locationY,
     }
   };
   return singlePin;
