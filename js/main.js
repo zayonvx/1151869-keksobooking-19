@@ -54,15 +54,15 @@ function getPins(amount) {
 }
 
 function getSinglePin(i) {
-  var locationX = getLocationX();
-  var locationY = getLocationY();
+  var setLocationX = getLocationX();
+  var setLocationY = getLocationY();
   var singlePin = {
     author: {
       avatar: 'img/avatars/user0' + (i + 1) + '.png'
     },
     offer: {
       title: 'Заголовок',
-      address: locationX + ', ' + locationY,
+      address: setLocationX + ', ' + setLocationY,
       price: getRandomInteger(1000, 1000000),
       type: getRandomElementArray(TYPES),
       rooms: getRandomInteger(1, 3),
@@ -74,8 +74,8 @@ function getSinglePin(i) {
       photos: getRandomElementArray(PHOTOS),
     },
     location: {
-      x: locationX,
-      y: locationY,
+      x: setLocationX,
+      y: setLocationY,
     }
   };
   return singlePin;
