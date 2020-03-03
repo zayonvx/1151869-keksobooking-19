@@ -3,7 +3,10 @@
 var TYPES = ['palace', 'flat', 'house', 'bungalo'];
 var TIMES = ['12:00', '13:00', '14:00'];
 var FEATURES = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
-var PHOTOS = ['http://o0.github.io/assets/images/tokyo/hotel1.jpg', 'http://o0.github.io/assets/images/tokyo/hotel2.jpg', 'http://o0.github.io/assets/images/tokyo/hotel3.jpg'];
+var PHOTOS =
+['http://o0.github.io/assets/images/tokyo/hotel1.jpg',
+  'http://o0.github.io/assets/images/tokyo/hotel2.jpg',
+  'http://o0.github.io/assets/images/tokyo/hotel3.jpg'];
 
 var map = document.querySelector('.map');
 var mapPins = document.querySelector('.map__pins');
@@ -17,6 +20,13 @@ var LOCATION_X_MAX = mapPins.offsetWidth;
 var LOCATION_Y_MIN = 130;
 var LOCATION_Y_MAX = 630;
 var TARGET_AMOUNT = 8;
+
+var TYPES_TEXT = {
+  palace: 'Дворец',
+  flat: 'Квартира',
+  house: 'Дом',
+  bungalo: 'Бунгало'
+};
 
 function getRandomInteger(min, max) {
   var rand = min + Math.random() * (max + 1 - min);
@@ -54,31 +64,55 @@ function getPins(amount) {
 }
 
 function getSinglePin(i) {
-  var setLocationX = getLocationX();
-  var setLocationY = getLocationY();
-  var singlePin = {
-    author: {
-      avatar: 'img/avatars/user0' + (i + 1) + '.png'
-    },
-    offer: {
-      title: 'Заголовок',
-      address: setLocationX + ', ' + setLocationY,
-      price: getRandomInteger(1000, 1000000),
-      type: getRandomElementArray(TYPES),
-      rooms: getRandomInteger(1, 3),
-      guests: getRandomInteger(1, 3),
-      checkin: getRandomElementArray(TIMES),
-      checkout: getRandomElementArray(TIMES),
-      features: setRandomArray(FEATURES),
-      description: 'Описание недвижимости номер ' + (i + 1),
-      photos: getRandomElementArray(PHOTOS),
-    },
-    location: {
-      x: setLocationX,
-      y: setLocationY,
-    }
+  var author = {
+    avatar: 'img/avatars/user0' + (i + 1) + '.png'
   };
+
+  var location = {
+    x: getLocationX(),
+    y: getLocationY(),
+  };
+
+  var offer = {
+    title: 'Заголовок',
+    address: location.x + ', ' + location.y,
+    price: getRandomInteger(1000, 1000000),
+    type: getRandomElementArray(TYPES),
+    rooms: getRandomInteger(1, 3),
+    guests: getRandomInteger(1, 3),
+    checkin: getRandomElementArray(TIMES),
+    checkout: getRandomElementArray(TIMES),
+    features: setRandomArray(FEATURES),
+    description: 'Описание недвижимости номер ' + (i + 1),
+    photos: getRandomElementArray(PHOTOS),
+  };
+
+  var singlePin = {
+    author: author,
+    offer: offer,
+    location: location,
+  };
+
   return singlePin;
+}
+
+function getPhoto(popupPhotoTemplate, index) {
+  var photoItem = popupPhotoTemplate.cloneNode(true);
+  photoItem.src = PHOTOS[index];
+  photoItem.alt = 'Квартира' + (index + 1);
+  photoItem.style.width = 40;
+  photoItem.style.hight = 45;
+
+  return photoItem;
+}
+
+function renderPhoto(tempPopup) {
+  var popupPhotos = tempPopup.querySelector('.popup__photos');
+  var popupPhotoTemplate = popupPhotos.querySelector('.popup__photo');
+  popupPhotos.innerHTML = '';
+  for (var i = 0; i < PHOTOS.length; i++) {
+    popupPhotos.appendChild(getPhoto(popupPhotoTemplate, i));
+  }
 }
 
 function renderPin(singlePin) {
@@ -98,12 +132,12 @@ function renderPopup(singlePin) {
   popupItem.querySelector('.popup__title').textContent = singlePin.offer.title;
   popupItem.querySelector('.popup__text--address').textContent = singlePin.offer.address;
   popupItem.querySelector('.popup__text--price').textContent = singlePin.offer.price + 'Р/Ночь';
-  popupItem.querySelector('.popup__type').textContent = TYPES[singlePin.offer.type];
+  popupItem.querySelector('.popup__type').textContent = TYPES_TEXT[singlePin.offer.type];
   popupItem.querySelector('.popup__text--capacity').textContent = singlePin.offer.rooms + ' комнаты для ' + singlePin.offer.guests + ' гостей';
   popupItem.querySelector('.popup__text--time').textContent = 'Заезд после ' + singlePin.offer.checkin + ' выезд до ' + singlePin.offer.checkout;
-  popupItem.querySelector('.popup__feature').textContent = FEATURES[singlePin.offer.features];
+  popupItem.querySelector('.popup__feature').textContent = singlePin.offer.features;
   popupItem.querySelector('.popup__description').textContent = singlePin.offer.description;
-  popupItem.querySelector('.popup__photo').src = PHOTOS[singlePin.offer.photos];
+  renderPhoto(popupItem);
 
   return popupItem;
 }
