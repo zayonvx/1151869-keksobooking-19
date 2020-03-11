@@ -197,7 +197,7 @@ function getPinCord(evt) {
   }
 }
 
-function validation () {
+function validation() {
   rooms.setCustomValidity('');
   capacity.setCustomValidity('');
   if (+rooms.value < +capacity.value) {
@@ -208,7 +208,7 @@ function validation () {
     rooms.setCustomValidity('Доступно не для гостей');
     capacity.setCustomValidity('Доступно не для гостей');
   }
-};
+}
 
 function main() {
   moveToActive();
