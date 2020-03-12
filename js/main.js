@@ -10,7 +10,7 @@ var PHOTOS =
 
 var map = document.querySelector('.map');
 var adForm = document.querySelector('.ad-form');
-var mpForm = document.querySelector('.map__filters');
+var mapForm = document.querySelector('.map__filters');
 var mapPins = document.querySelector('.map__pins');
 var mainPin = document.querySelector('.map__pin--main');
 var addressField = adForm.querySelector('input[name="address"');
@@ -26,6 +26,7 @@ var LOCATION_Y_MIN = 130;
 var LOCATION_Y_MAX = 630;
 var TARGET_AMOUNT = 8;
 var ENTER_KEY = 'Enter';
+var MOUSE_KEY = 0;
 
 // var TYPES_TEXT = {
 //   palace: 'Дворец',
@@ -59,14 +60,14 @@ function setEnabled(form) {
 }
 
 function inactiveFields() {
-  var fieldsSetArray = [adForm, mpForm];
+  var fieldsSetArray = [adForm, mapForm];
   for (var i = 0; i < fieldsSetArray.length; i++) {
     setDisabled(fieldsSetArray[i]);
   }
 }
 
 function activeFields() {
-  var fieldsSetArray = [adForm, mpForm];
+  var fieldsSetArray = [adForm, mapForm];
   for (var i = 0; i < fieldsSetArray.length; i++) {
     setEnabled(fieldsSetArray[i]);
   }
@@ -188,10 +189,10 @@ function moveToActive() {
   activeFields();
 }
 
-function getPinCord(evt) {
-  if (evt.which === 1) {
-    var pinX = Math.floor(evt.pageX + PIN_OFFSET_TOP / 2);
-    var pinY = Math.floor(evt.pageY + PIN_OFFSET_TOP / 2);
+function getPinCord(event) {
+  if (event.button === MOUSE_KEY) {
+    var pinX = Math.floor(event.pageX + PIN_OFFSET_TOP / 2);
+    var pinY = Math.floor(event.pageY + PIN_OFFSET_TOP / 2);
     addressField.value = pinX + ', ' + pinY;
     mainPin.removeEventListener('mousedown', getPinCord);
   }
@@ -221,13 +222,10 @@ function main() {
   // map.insertBefore(fragment.appendChild(renderPopup(pins[0])), map.querySelector('.map__filters-container'));
 }
 
-function active(evt) {
-  if (evt.which === 1) {
+function active(event) {
+  if (event.button === MOUSE_KEY || event.key === ENTER_KEY) {
     main();
     mainPin.removeEventListener('mousedown', active);
-  }
-  if (evt.key === ENTER_KEY) {
-    main();
     mainPin.removeEventListener('keydown', active);
   }
 }
@@ -235,11 +233,5 @@ function active(evt) {
 mainPin.addEventListener('mousedown', active);
 mainPin.addEventListener('keydown', active);
 mainPin.addEventListener('mousedown', getPinCord);
-
-rooms.addEventListener('change', function () {
-  validation();
-});
-
-capacity.addEventListener('change', function () {
-  validation();
-});
+rooms.addEventListener('change', validation);
+capacity.addEventListener('change', validation);
