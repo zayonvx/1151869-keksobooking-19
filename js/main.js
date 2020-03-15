@@ -1,6 +1,24 @@
 'use strict';
 
 var TYPES = ['palace', 'flat', 'house', 'bungalo'];
+var TYPES_COSTS = {
+  palace: {
+    name: 'Дворец',
+    price: '10000'
+  },
+  flat: {
+    name: 'Квартира',
+    price: '1000'
+  },
+  house: {
+    name: 'Дом',
+    price: '5000'
+  },
+  bungalo: {
+    name: 'Бунгало',
+    price: '0'
+  }
+};
 var TIMES = ['12:00', '13:00', '14:00'];
 var FEATURES = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
 var PHOTOS =
@@ -32,13 +50,6 @@ var TARGET_AMOUNT = 8;
 var ENTER_KEY = 'Enter';
 var MOUSE_KEY = 0;
 var ESC_KEY = 'Escape';
-
-var TYPES_TEXT = {
-  palace: 'Дворец',
-  flat: 'Квартира',
-  house: 'Дом',
-  bungalo: 'Бунгало'
-};
 
 function getRandomInteger(min, max) {
   var rand = min + Math.random() * (max + 1 - min);
@@ -203,7 +214,7 @@ function renderPopup(singlePin) {
   popupItem.querySelector('.popup__title').textContent = singlePin.offer.title;
   popupItem.querySelector('.popup__text--address').textContent = singlePin.offer.address;
   popupItem.querySelector('.popup__text--price').textContent = singlePin.offer.price + 'Р/Ночь';
-  popupItem.querySelector('.popup__type').textContent = TYPES_TEXT[singlePin.offer.type];
+  popupItem.querySelector('.popup__type').textContent = TYPES_COSTS[singlePin.offer.type].name;
   popupItem.querySelector('.popup__text--capacity').textContent = singlePin.offer.rooms + ' комнаты для ' + singlePin.offer.guests + ' гостей';
   popupItem.querySelector('.popup__text--time').textContent = 'Заезд после ' + singlePin.offer.checkin + ' выезд до ' + singlePin.offer.checkout;
   popupItem.querySelector('.popup__feature').textContent = singlePin.offer.features;
@@ -267,28 +278,16 @@ function active(event) {
   }
 }
 
-function checkCost() {
-  switch (type.value) {
-    case 'bungalo':
-      price.min = 0;
-      price.placeholder = '0';
-      break;
-    case 'flat':
-      price.min = 1000;
-      price.placeholder = '1000';
-      break;
-    case 'house':
-      price.min = 5000;
-      price.placeholder = '5000';
-      break;
-    case 'palace':
-      price.min = 10000;
-      price.placeholder = '10000';
-      break;
-  }
+function setTypeParams(priceData) {
+  price.setAttribute('min', priceData);
+  price.setAttribute('placeholder', priceData);
 }
 
-function checkTime(timeInData, timeOutData) {
+function setPrice() {
+  setTypeParams(TYPES_COSTS[type.value].price);
+}
+
+function setTime(timeInData, timeOutData) {
   if (timeInData.value !== timeOutData.value) {
     timeOutData.value = timeInData.value;
   }
@@ -299,10 +298,10 @@ mainPin.addEventListener('keydown', active);
 mainPin.addEventListener('mousedown', getPinCord);
 rooms.addEventListener('change', validation);
 capacity.addEventListener('change', validation);
-type.addEventListener('change', checkCost);
+type.addEventListener('change', setPrice);
 timeIn.addEventListener('change', function () {
-  checkTime(timeIn, timeOut);
+  setTime(timeIn, timeOut);
 });
 timeOut.addEventListener('change', function () {
-  checkTime(timeOut, timeIn);
+  setTime(timeOut, timeIn);
 });
