@@ -75,15 +75,15 @@ function setEnabled(form) {
   }
 }
 
-function inactiveFields() {
-  var fieldsSetArray = [adForm, mapForm];
+function inactiveFields(adFormData, mapFormData) {
+  var fieldsSetArray = [adFormData, mapFormData];
   for (var i = 0; i < fieldsSetArray.length; i++) {
     setDisabled(fieldsSetArray[i]);
   }
 }
 
-function activeFields() {
-  var fieldsSetArray = [adForm, mapForm];
+function activeFields(adFormData, mapFormData) {
+  var fieldsSetArray = [adFormData, mapFormData];
   for (var i = 0; i < fieldsSetArray.length; i++) {
     setEnabled(fieldsSetArray[i]);
   }
@@ -225,16 +225,12 @@ function renderPopup(singlePin) {
   return popupItem;
 }
 
-function inactive() {
-  inactiveFields();
-}
-
-inactive();
+inactiveFields(adForm, mapForm);
 
 function moveToActive() {
   map.classList.remove('map--faded');
   adForm.classList.remove('ad-form--disabled');
-  activeFields();
+  activeFields(adForm, mapForm);
 }
 
 function getPinCord(event) {
@@ -259,10 +255,10 @@ function validation() {
   }
 }
 
-function main() {
+function main(amount) {
   moveToActive();
   var fragment = document.createDocumentFragment();
-  var pins = getPins(TARGET_AMOUNT);
+  var pins = getPins(amount);
   for (var i = 0; i < pins.length; i++) {
     fragment.appendChild(renderPin(pins[i]));
   }
@@ -272,7 +268,7 @@ function main() {
 
 function active(event) {
   if (event.button === MOUSE_KEY || event.key === ENTER_KEY) {
-    main();
+    main(TARGET_AMOUNT);
     mainPin.removeEventListener('mousedown', active);
     mainPin.removeEventListener('keydown', active);
   }
@@ -283,8 +279,8 @@ function setTypeParams(priceData) {
   price.setAttribute('placeholder', priceData);
 }
 
-function setPrice() {
-  setTypeParams(TYPES_COSTS[type.value].price);
+function setPrice(costData) {
+  setTypeParams(costData[type.value].price);
 }
 
 function setTime(timeInData, timeOutData) {
@@ -298,7 +294,7 @@ mainPin.addEventListener('keydown', active);
 mainPin.addEventListener('mousedown', getPinCord);
 rooms.addEventListener('change', validation);
 capacity.addEventListener('change', validation);
-type.addEventListener('change', setPrice);
+type.addEventListener('change', setPrice(TYPES_COSTS));
 timeIn.addEventListener('change', function () {
   setTime(timeIn, timeOut);
 });
