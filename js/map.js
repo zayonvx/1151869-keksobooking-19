@@ -53,11 +53,15 @@
     }
   };
 
+  window.setPinLocation = function () {
+    var pinX = Math.floor(event.pageX + window.dataMisc.pinOffsetLeft / 2);
+    var pinY = Math.floor(event.pageY + window.dataMisc.pinOffsetTop / 2);
+    window.dataMain.addressField.value = pinX + ', ' + pinY;
+  };
+
   window.getPinCord = function (event) {
     if (event.button === window.keys.mouseButton) {
-      var pinX = Math.floor(event.pageX + window.dataMisc.pinOffsetLeft / 2);
-      var pinY = Math.floor(event.pageY + window.dataMisc.pinOffsetTop / 2);
-      window.dataMain.addressField.value = pinX + ', ' + pinY;
+      window.setPinLocation();
       window.dataMain.mainPinTemplate.removeEventListener('mousedown', window.getPinCord);
     }
   };
