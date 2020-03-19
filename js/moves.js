@@ -29,6 +29,18 @@
       window.dataMain.mainPinTemplate.style.top = (window.dataMain.mainPinTemplate.offsetTop - shift.y) + 'px';
       window.dataMain.mainPinTemplate.style.left = (window.dataMain.mainPinTemplate.offsetLeft - shift.x) + 'px';
       window.setPinLocation();
+      if (window.dataMain.mainPinTemplate.offsetTop < window.dataMisc.locationMinY && shift.y > 0) {
+        window.dataMain.mainPinTemplate.style.top = window.dataMisc.locationMinY + 'px';
+      }
+      if (window.dataMain.mainPinTemplate.offsetTop > window.dataMisc.locationMaxY && shift.y < 0) {
+        window.dataMain.mainPinTemplate.style.top = window.dataMisc.locationMaxY + 'px';
+      }
+      if ((window.dataMain.mainPinTemplate.offsetLeft + window.dataMisc.pinHalfWidth) < 0 && shift.x > 0) {
+        window.dataMain.mainPinTemplate.style.left = -window.dataMisc.pinHalfWidth + 'px';
+      }
+      if ((window.dataMain.mainPinTemplate.offsetLeft + window.dataMisc.pinHalfWidth) > window.dataMisc.locationMaxX && shift.x < 0) {
+        window.dataMain.mainPinTemplate.style.left = (window.dataMisc.locationMaxX - window.dataMisc.pinHalfWidth) + 'px';
+      }
     };
 
     var onMouseUp = function (upEvt) {
