@@ -43,6 +43,7 @@
   var timeOut = adForm.querySelector('#timeout');
   var PIN_OFFSET_TOP = template.offsetHeight;
   var PIN_OFFSET_LEFT = template.offsetWidth;
+  var PIN_HALF_WIDTH = 30;
   var LOCATION_X_MIN = 1;
   var LOCATION_X_MAX = mapPins.offsetWidth;
   var LOCATION_Y_MIN = 130;
@@ -85,5 +86,6 @@
     locationMinY: LOCATION_Y_MIN,
     locationMaxY: LOCATION_Y_MAX,
     amount: AMOUNT,
+    pinHalfWidth: PIN_HALF_WIDTH,
   };
 })();
